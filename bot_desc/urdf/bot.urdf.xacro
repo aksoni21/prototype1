@@ -1,0 +1,238 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="proto_bot">
+
+    <xacro:arg name="is_sim" default="true"/>
+    <xacro:include filename="$(find bot_desc)/urdf/bot_ros2_control.xacro"/>
+    <xacro:include filename="$(find bot_desc)/urdf/bot_gazebo.xacro"/>
+    <xacro:macro name="default_inertial" params="mass">
+        <inertial>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <mass value="${mass}"/>
+            <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+        </inertial>
+    </xacro:macro>
+    
+    <link name="world"/>
+    <link name="base_cone">
+        <visual>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/new_base_cone.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/new_base_cone.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="world_base" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="world"/>
+        <child link="base_cone"/>
+    </joint>
+
+    <link name="shoulder_attachment">
+        <visual>
+            <origin xyz="0.0 0.0 -0.075" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/shoulder_attachment.stl"/>
+            </geometry>
+            <material name="green_material">
+                <color rgba="0 1 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 -0.075" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/shoulder_attachment.stl"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="base_to_shoulder_attachment" type="revolute">
+        <origin xyz="0 0 0.075" rpy="0 0 0" />
+        <parent link="base_cone"/>
+        <child link="shoulder_attachment"/>
+        <axis xyz="0.0 0.0 1.0"/>
+        <limit lower="-1.57" upper="1.57" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <link name="shoulder_motor">
+        <visual>
+            <origin xyz="0.0 0.0 -0.0775" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/shoulder_motor.stl" />
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 -0.0775" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/shoulder_motor.stl" />
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="shoulder_attachment_to_shoulder_motor" type="fixed">
+        <origin xyz="0.0 0.0 0.0025" rpy="0.0 0.0 0.0"/>
+        <parent link="shoulder_attachment"/>
+        <child link="shoulder_motor"/>
+    </joint>
+
+    <link name="shoulder_arm">
+        <visual>
+            <origin xyz="0.0 0.0 -0.1375" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/shoulder_arm.stl" />
+            </geometry>
+            <material name="red_material">
+                <color rgba="1 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 -0.1375" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/shoulder_arm.stl" />
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="shoulder_motor_to_shoulder_arm" type="revolute">
+        <origin xyz="0.0 0.0 0.06" rpy="0.0 0.0 0.0"/>
+        <parent link="shoulder_motor"/>
+        <child link="shoulder_arm"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-1.57" upper="1.57" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <link name="elbow_arm">
+        <visual>
+            <origin xyz="0.0 0.0 -0.3225" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/elbow_arm.stl"/>
+            </geometry>
+            <material name="elbow_arm_material">
+                <color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 -0.3275" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/elbow_arm.stl"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="shoulder_to_elbow" type="revolute">
+        <origin xyz="0.0 0.0 0.185" rpy="0.0 0.0 0.0"/>
+        <parent link="shoulder_arm"/>
+        <child link="elbow_arm"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-1.57" upper="1.57" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <link name="wrist_attachment_1">
+        <visual>
+            <origin xyz="0.0 0.0 -0.4545" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/wrist_attachment_1.stl"/>
+            </geometry>
+            <material name="wrist_attachment_1_material">
+                <color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 -0.4545" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/wrist_attachment_1.stl"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="elbow_to_wrist_attachment" type="revolute">
+        <origin xyz="0.0 0.0 0.132" rpy="0.0 0.0 0.0"/>
+        <parent link="elbow_arm"/>
+        <child link="wrist_attachment_1"/>
+        <axis xyz="1.0 0.0 0.0"/>
+        <limit lower="-2.75" upper="2.75" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <link name='utensil_attachment'>
+        <visual>
+            <origin xyz="-0.04 -0.03825 -0.4625" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/utensil_attachment.stl"/>
+            </geometry>
+            <material name="utensil_attachment_material">
+                <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.04 -0.03825 -0.4625" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/utensil_attachment.stl"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="wrist_to_utensil" type="revolute">
+        <origin xyz="0.0425 0.03 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="wrist_attachment_1"/>
+        <child link="utensil_attachment"/>
+        <axis xyz="0.0 1.0 0.0"/>
+        <limit lower="-3.14" upper="3.14" effort="0.0" velocity="0.0"/>
+    </joint>
+
+    <link name='handle'>
+        <visual>
+            <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/handle.stl"/>
+            </geometry>
+            <material name="idk">
+                <color rgba="1 1 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/handle.stl"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="utensil_to_spatula" type="fixed">
+        <origin xyz="0.0 0.25 -0.05" rpy="0.0 0.0 0.0"/>
+        <parent link="utensil_attachment"/>
+        <child link="handle"/>
+    </joint>
+
+    <link name='spatula'>
+        <visual>
+            <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/spatula.stl"/>
+            </geometry>
+            <material name="idk2">
+                <color rgba="1 0 0 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <mesh filename="package://bot_desc/meshes/spatula.stl"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="spatula_to_handle" type="fixed">
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
+        <parent link="handle"/>
+        <child link="spatula"/>
+    </joint> 
+</robot>

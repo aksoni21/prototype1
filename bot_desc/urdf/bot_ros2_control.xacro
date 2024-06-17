@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <ros2_control name="RobotSystem" type="system">
+
+        <xacro:property name="PI" value="3.14159" />
+        <xacro:if value="$(arg is_sim)">
+            <hardware>
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            </hardware>
+            <!-- <joint name="joint_5">
+                <command_interface name = "position">
+                    <param name = "min">0</param>
+                    <param name = "max">${PI/2}</param>
+                </command_interface>
+                <state_interface name = "position"/>
+                <mimic joint = "joint_4" multiplier = "-1"/>
+            </joint> -->
+        </xacro:if>
+
+        <!-- <xacro:unless value="$(arg is_sim)">
+            <hardware>
+                <plugin>arduino_bot_controller/ArduinobotInterface</plugin>
+                <param name="port">/dev/ttyACM0</param>
+            </hardware>
+        </xacro:unless> -->
+
+        <joint name="base_to_shoulder_attachment">
+            <command_interface name = "position">
+                <param name = "min">-${PI}</param>
+                <param name = "max">${PI}</param>
+            </command_interface>
+            <state_interface name = "position"/>
+        </joint>
+        <joint name="shoulder_motor_to_shoulder_arm">
+            <command_interface name = "position">
+                <param name = "min">-${PI/2}</param>
+                <param name = "max">${PI/2}</param>
+            </command_interface>
+            <state_interface name = "position"/>
+        </joint>
+        <joint name="shoulder_to_elbow">
+            <command_interface name = "position">
+                <param name = "min">-${PI/2}</param>
+                <param name = "max">${PI/2}</param>
+            </command_interface>
+            <state_interface name = "position"/>
+        </joint>
+        <joint name="elbow_to_wrist_attachment">
+            <command_interface name = "position">
+                <param name = "min">-${PI/2}</param>
+                <param name = "max">${PI/2}</param>
+            </command_interface>
+            <state_interface name = "position"/>
+        </joint>
+        <joint name="wrist_to_utensil">
+            <command_interface name = "position">
+                <param name = "min">-${PI}</param>
+                <param name = "max">${PI}</param>
+            </command_interface>
+            <state_interface name = "position"/>
+        </joint>
+    </ros2_control>
+
+</robot>
