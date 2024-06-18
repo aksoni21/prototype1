@@ -1,0 +1,8 @@
+# Default initial positions for proto_bot's ros2_control fake system
+
+initial_positions:
+  base_to_shoulder_attachment: 0
+  elbow_to_wrist_attachment: 0
+  shoulder_motor_to_shoulder_arm: 0
+  shoulder_to_elbow: 0
+  wrist_to_utensil: 0

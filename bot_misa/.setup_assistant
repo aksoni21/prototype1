@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: bot_desc
+    relative_path: urdf/bot.urdf.xacro
+  srdf:
+    relative_path: config/proto_bot.srdf
+  package_settings:
+    author_name: Ankur
+    author_email: Ankur@gmail.com
+    generated_timestamp: 1718721668
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
