@@ -25,6 +25,22 @@
         <joint name="shoulder_motor_to_shoulder_arm" value="0"/>
         <joint name="shoulder_to_elbow" value="0"/>
     </group_state>
+    <group_state name="r1" group="arm">
+        <joint name="base_to_shoulder_attachment" value="0.5699"/>
+        <joint name="elbow_to_wrist_attachment" value="0.5699"/>
+        <joint name="shoulder_motor_to_shoulder_arm" value="0.5699"/>
+        <joint name="shoulder_to_elbow" value="0.5699"/>
+    </group_state>
+    <group_state name="r2" group="arm">
+        <joint name="base_to_shoulder_attachment" value="0.8"/>
+        <joint name="elbow_to_wrist_attachment" value="0.3"/>
+        <joint name="shoulder_motor_to_shoulder_arm" value="0.3"/>
+        <joint name="shoulder_to_elbow" value="0.2"/>
+    </group_state>
+    <group_state name="home" group="handle_group">
+        <joint name="wrist_to_utensil" value="0"/>
+    </group_state>
+
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="handle_end_effector" parent_link="wrist_attachment_1" group="handle_group"/>
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->

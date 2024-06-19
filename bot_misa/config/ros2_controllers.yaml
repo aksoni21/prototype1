@@ -3,6 +3,9 @@ controller_manager:
   ros__parameters:
     update_rate: 100  # Hz
 
+    # base_controller:
+    #   type: joint_trajectory_controller/JointTrajectoryController
+
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
@@ -13,6 +16,17 @@ controller_manager:
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+
+
+# base_controller:
+#   ros__parameters:
+#     joints:
+#       - base_to_shoulder_attachment
+#     command_interfaces:
+#       - position
+#     state_interfaces:
+#       - position
+#       - velocity
 
 arm_controller:
   ros__parameters:
@@ -26,6 +40,7 @@ arm_controller:
     state_interfaces:
       - position
       - velocity
+
 handle_controller:
   ros__parameters:
     joint: wrist_to_utensil

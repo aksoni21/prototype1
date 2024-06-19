@@ -4,9 +4,16 @@ moveit_controller_manager: moveit_simple_controller_manager/MoveItSimpleControll
 
 moveit_simple_controller_manager:
   controller_names:
+    # - base_controller
     - arm_controller
     - handle_controller
 
+  # base_controller:
+  #   type: FollowJointTrajectory
+  #   action_ns: follow_joint_trajectory
+  #   default: true
+  #   joints:
+  #     - base_to_shoulder_attachment
   arm_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory

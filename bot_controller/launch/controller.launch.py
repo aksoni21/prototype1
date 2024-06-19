@@ -60,6 +60,16 @@ def generate_launch_description():
         ]
     )
 
+    # base_controller_spawner = Node(
+    #     package="controller_manager",
+    #     executable="spawner",
+    #     arguments=[
+    #         "base_controller",
+    #         # "--controller_manager","/controller_manager"
+    #     ]
+    # )
+
+
     handle_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -74,6 +84,7 @@ def generate_launch_description():
         robot_state_publisher_node,
         controller_manager,
         joint_state_broadcast_spawner,
+        # base_controller_spawner,
         arm_controller_spawner,
         handle_controller_spawner,
     ])
