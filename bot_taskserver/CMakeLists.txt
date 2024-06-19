@@ -14,12 +14,44 @@ find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
+find_package(bot_msgs REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+add_library(main_taskserver SHARED src/main_taskserver.cpp)
+target_include_directories(main_taskserver PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_definitions(main_taskserver
+  PRIVATE "MAIN_TASKSERVER_CPP_BUILDING_DLL")
+
+ament_target_dependencies(main_taskserver
+  "rclcpp"
+  "rclcpp_action"
+  "rclcpp_components"
+  "moveit_ros_planning_interface"
+  "bot_msgs" 
+)
+
+rclcpp_components_register_node(main_taskserver
+  PLUGIN "bot_taskserver::TaskServer"
+  EXECUTABLE main_taskserver_node
+)
+
+install(TARGETS
+main_taskserver
+ARCHIVE DESTINATION lib
+LIBRARY DESTINATION lib
+RUNTIME DESTINATION bin
+)
+
 add_executable(simple_taskserver src/simple_taskserver.cpp)
 ament_target_dependencies(simple_taskserver rclcpp moveit_ros_planning_interface)
+
+# add_executable(main_taskserver src/main_taskserver.cpp)
+# ament_target_dependencies(main_taskserver rclcpp moveit_ros_planning_interface)
+
 
 install(
 TARGETS simple_taskserver 

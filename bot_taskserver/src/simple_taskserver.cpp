@@ -13,9 +13,9 @@ void move_robot(const std::shared_ptr<rclcpp::Node> node)
     auto arm_move_group = moveit::planning_interface::MoveGroupInterface(node, "arm_group");
     auto handle_move_group = moveit::planning_interface::MoveGroupInterface(node, "handle_group");
     RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "in move robot 1");
-    std::vector<double> arm_joint_goal{1.57, 0.0, 0.0};
+    std::vector<double> arm_joint_goal{-1.57, -0.50, 0.50, 0.80};
     // std::vector<double> base_joint_goal{0.0, 0.0, 1.57};
-    std::vector<double> handle_joint_goal{0.0, 0.0, 0.50};
+    std::vector<double> handle_joint_goal{-0.50};
 
     RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "in move robot 2");
 

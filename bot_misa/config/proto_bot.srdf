@@ -25,13 +25,13 @@
         <joint name="shoulder_motor_to_shoulder_arm" value="0"/>
         <joint name="shoulder_to_elbow" value="0"/>
     </group_state>
-    <group_state name="r1" group="arm">
+    <group_state name="r1" group="arm_group">
         <joint name="base_to_shoulder_attachment" value="0.5699"/>
         <joint name="elbow_to_wrist_attachment" value="0.5699"/>
         <joint name="shoulder_motor_to_shoulder_arm" value="0.5699"/>
         <joint name="shoulder_to_elbow" value="0.5699"/>
     </group_state>
-    <group_state name="r2" group="arm">
+    <group_state name="r2" group="arm_group">
         <joint name="base_to_shoulder_attachment" value="0.8"/>
         <joint name="elbow_to_wrist_attachment" value="0.3"/>
         <joint name="shoulder_motor_to_shoulder_arm" value="0.3"/>
