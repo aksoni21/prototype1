@@ -41,8 +41,8 @@ def generate_launch_description():
     # )
 
     return LaunchDescription([
+        moveit,
         gazebo,
         controller,
-        moveit,
         # remote_interface,
     ])

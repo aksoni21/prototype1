@@ -7,7 +7,7 @@
     <xacro:macro name="default_inertial" params="mass">
         <inertial>
             <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
-            <mass value="${mass}"/>
+            <mass value="${mass}" unit="kg"/>
             <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
         </inertial>
     </xacro:macro>
@@ -235,6 +235,30 @@
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
         <parent link="handle"/>
         <child link="spatula"/>
+    </joint>
+
+    <link name="burger">
+        <visual name="">
+            <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.05" length="0.1"/>
+            </geometry>
+            <material name="">
+                <color rgba="1.0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0.05" rpy="0.0 0.0 0.0"/>
+            <geometry>
+                <cylinder radius="0.05" length="0.1"/>
+            </geometry>
+        </collision>
+        <xacro:default_inertial mass="1.0"/>
+    </link>
+    <joint name="spatula_to_burger" type="fixed">
+        <origin xyz="0.0 0.02 0.005" rpy="0.0 0.0 0.0"/>
+        <parent link="spatula"/>
+        <child link="burger"/>
     </joint>
 
     <link name="grill">
