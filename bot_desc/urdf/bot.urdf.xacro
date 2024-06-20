@@ -134,7 +134,7 @@
         <parent link="shoulder_arm"/>
         <child link="elbow_arm"/>
         <axis xyz="1.0 0.0 0.0"/>
-        <limit lower="-1.57" upper="1.57" effort="0.0" velocity="0.0"/>
+        <limit lower="-1.57" upper="1.57" effort="1.962" velocity="5.236"/>
     </joint>
 
     <link name="wrist_attachment_1">
@@ -160,7 +160,7 @@
         <parent link="elbow_arm"/>
         <child link="wrist_attachment_1"/>
         <axis xyz="1.0 0.0 0.0"/>
-        <limit lower="-2.75" upper="2.75" effort="0.0" velocity="0.0"/>
+        <limit lower="-2.75" upper="2.75" effort="1.3734" velocity="10.472"/>
     </joint>
 
     <link name='utensil_attachment'>
@@ -253,7 +253,7 @@
                 <cylinder radius="0.05" length="0.1"/>
             </geometry>
         </collision>
-        <xacro:default_inertial mass="1.0"/>
+        <xacro:default_inertial mass="10.0"/>
     </link>
     <joint name="spatula_to_burger" type="fixed">
         <origin xyz="0.0 0.02 0.005" rpy="0.0 0.0 0.0"/>
