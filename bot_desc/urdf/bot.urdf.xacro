@@ -57,7 +57,7 @@
         <parent link="base_cone"/>
         <child link="shoulder_attachment"/>
         <axis xyz="0.0 0.0 1.0"/>
-        <limit lower="-1.57" upper="1.57" effort="0.0" velocity="0.0"/>
+        <limit lower="-1.57" upper="1.57" effort="1.3734" velocity="10.0"/>
     </joint>
 
     <link name="shoulder_motor">
@@ -107,7 +107,7 @@
         <parent link="shoulder_motor"/>
         <child link="shoulder_arm"/>
         <axis xyz="1.0 0.0 0.0"/>
-        <limit lower="-1.57" upper="1.57" effort="0.0" velocity="0.0"/>
+        <limit lower="-1.57" upper="1.57" effort="7.848" velocity="5.527"/>
     </joint>
 
     <link name="elbow_arm">
@@ -186,7 +186,7 @@
         <parent link="wrist_attachment_1"/>
         <child link="utensil_attachment"/>
         <axis xyz="0.0 1.0 0.0"/>
-        <limit lower="-3.14" upper="3.14" effort="0.0" velocity="0.0"/>
+        <limit lower="-3.14" upper="3.14" effort="1.3734" velocity="10.0"/>
     </joint>
 
     <link name='handle'>

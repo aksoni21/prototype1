@@ -16,6 +16,7 @@
   <!-- <depend>rclcpp_components</depend> -->
   <depend>rclcpp_lifecycle</depend>
   <depend>bot_msgs</depend>
+  <depend>geometry_msgs</depend>
   <!-- <depend>moveit_ros_planning_interface</depend> -->
   <depend>ros2launch</depend>
 

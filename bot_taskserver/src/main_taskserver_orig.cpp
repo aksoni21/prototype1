@@ -44,93 +44,59 @@ namespace bot_taskserver
 
             std::vector<double> arm_joint_goal;
             std::vector<double> handle_joint_goal;
-            geometry_msgs::msg::Pose target_pose;
 
             if (goal_handle->get_goal()->task_number == 0)
             {
-                target_pose.orientation.w = 0.0;
-                target_pose.position.x = 0.0;
-                target_pose.position.y = 0.0;
-                target_pose.position.z = 0.3;
-                arm_move_group.setPoseTarget(target_pose);
-                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "in 0...");
+                arm_joint_goal = {0.0, 0.0, 0.0, 0.0};
+                handle_joint_goal = {-0.0};
             }
             else if (goal_handle->get_goal()->task_number == 1)
             {
-
-                target_pose.orientation.w = 0.0;
-                target_pose.position.x = 0.0;
-                target_pose.position.y = 0.15;
-                target_pose.position.z = 0.2;
-                arm_move_group.setPoseTarget(target_pose);
-                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "in 1...");
-                
+                arm_joint_goal = {-1.14, -0.6, 1.57, -0.7};
+                handle_joint_goal = {0.7};
             }
             else if (goal_handle->get_goal()->task_number == 2)
             {
-
-                target_pose.orientation.w = 0.0;
-                target_pose.position.x = 0.0;
-                target_pose.position.y = 0.1;
-                target_pose.position.z = 0.2;
-                arm_move_group.setPoseTarget(target_pose);
-                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "in 2...");
+                arm_joint_goal = {-1.57, 1.57, 1.0, -1.0};
+                handle_joint_goal = {-0.8};
             }
             else
             {
-                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Invalid Task Number bro");
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Invalid Task Number");
                 return;
             }
 
-            // target_pose.orientation.w = 0.0;
-            // target_pose.position.x = 0.0;
-            // target_pose.position.y = 0.15;
-            // target_pose.position.z = 0.236;
-            // arm_move_group.setPoseTarget(target_pose);
-            arm_move_group.setPlanningTime(10.0);
+            bool arm_within_bounds = arm_move_group.setJointValueTarget(arm_joint_goal);
+            bool handle_within_bounds = handle_move_group.setJointValueTarget(handle_joint_goal);
 
-            // bool arm_within_bounds = arm_move_group.setJointValueTarget(arm_joint_goal);
-            // bool handle_within_bounds = handle_move_group.setJointValueTarget(handle_joint_goal);
-
-            // if (!arm_within_bounds | !handle_within_bounds)
-            // {
-            //     RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Target Joint values out of bounds");
-            //     return;
-            // }
-
-            // moveit::planning_interface::MoveGroupInterface::Plan arm_plan;
-            // moveit::planning_interface::MoveGroupInterface::Plan handle_plan;
-
-            RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "about to plan---");
-            moveit::planning_interface::MoveGroupInterface::Plan plan;
-            bool success = (arm_move_group.plan(plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-
-            if (success)
+            if (!arm_within_bounds | !handle_within_bounds)
             {
-                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Plan found, executing...");
+                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Target Joint values out of bounds");
+                return;
+            }
+
+            RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Kinematics solver: %s",
+                        arm_move_group.getPlanningPipelineId().c_str());
+            RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Planning group: %s",
+                        arm_move_group.getName().c_str());
+            
+            moveit::planning_interface::MoveGroupInterface::Plan arm_plan;
+            moveit::planning_interface::MoveGroupInterface::Plan handle_plan;
+
+            bool arm_plan_success = arm_move_group.plan(arm_plan) == moveit::core::MoveItErrorCode::SUCCESS;
+            bool handle_plan_success = handle_move_group.plan(handle_plan) == moveit::core::MoveItErrorCode::SUCCESS;
+
+            if (arm_plan_success && handle_plan_success)
+            {
+                RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Planning Succeeded and now moving the arm and handle");
                 arm_move_group.move();
-                RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "Done executing...");
+                handle_move_group.move();
             }
             else
             {
-                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed to find a plan");
+                RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "One or more planners failed");
+                return;
             }
-
-            // bool arm_plan_success = arm_move_group.plan(plan) == moveit::core::MoveItErrorCode::SUCCESS;
-            // bool handle_plan_success = handle_move_group.plan(handle_plan) == moveit::core::MoveItErrorCode::SUCCESS;
-            // RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "planning complete----");
-
-            // if (arm_plan_success && handle_plan_success)
-            // {
-            //     RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Planning Succeeded and now moving the arm and handle");
-            //     // arm_move_group.move();
-            //     // handle_move_group.move();
-            // }
-            // else
-            // {
-            //     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "One or more planners failed");
-            //     return;
-            // }
 
             auto result = std::make_shared<bot_msgs::action::BotTaskAction::Result>();
             result->success = true;

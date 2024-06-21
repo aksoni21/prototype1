@@ -15,6 +15,8 @@ find_package(rclcpp_components REQUIRED)
 find_package(rclcpp_lifecycle REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(bot_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
+
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -32,6 +34,7 @@ ament_target_dependencies(main_taskserver
   "rclcpp_components"
   "moveit_ros_planning_interface"
   "bot_msgs" 
+  "geometry_msgs"
 )
 
 rclcpp_components_register_node(main_taskserver
