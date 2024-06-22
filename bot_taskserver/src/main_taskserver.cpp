@@ -48,7 +48,7 @@ namespace bot_taskserver
 
             if (goal_handle->get_goal()->task_number == 0)
             {
-                target_pose.orientation.w = 0.0;
+                target_pose.orientation.w = 1.0;
                 target_pose.position.x = 0.0;
                 target_pose.position.y = 0.0;
                 target_pose.position.z = 0.3;
@@ -58,19 +58,18 @@ namespace bot_taskserver
             else if (goal_handle->get_goal()->task_number == 1)
             {
 
-                target_pose.orientation.w = 0.0;
+                target_pose.orientation.w = 1.0;
                 target_pose.position.x = 0.0;
                 target_pose.position.y = 0.15;
                 target_pose.position.z = 0.2;
                 arm_move_group.setPoseTarget(target_pose);
                 RCLCPP_WARN(rclcpp::get_logger("rclcpp"), "in 1...");
-                
             }
             else if (goal_handle->get_goal()->task_number == 2)
             {
 
-                target_pose.orientation.w = 0.0;
-                target_pose.position.x = 0.0;
+                target_pose.orientation.w = 1.0;
+                target_pose.position.x = 0.1;
                 target_pose.position.y = 0.1;
                 target_pose.position.z = 0.2;
                 arm_move_group.setPoseTarget(target_pose);
@@ -88,6 +87,8 @@ namespace bot_taskserver
             // target_pose.position.z = 0.236;
             // arm_move_group.setPoseTarget(target_pose);
             arm_move_group.setPlanningTime(10.0);
+            arm_move_group.allowReplanning(true);
+            arm_move_group.setNumPlanningAttempts(5);
 
             // bool arm_within_bounds = arm_move_group.setJointValueTarget(arm_joint_goal);
             // bool handle_within_bounds = handle_move_group.setJointValueTarget(handle_joint_goal);

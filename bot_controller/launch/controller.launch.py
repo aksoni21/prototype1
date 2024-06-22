@@ -38,7 +38,7 @@ def generate_launch_description():
         package='controller_manager',
         executable='ros2_control_node',
         parameters=[{"robot_description": robot_description, "use_sim_time": is_sim}, os.path.join(
-            get_package_share_directory("bot_controller"), "config", "controllers.yaml")],
+            get_package_share_directory("bot_controller"), "config", "bot_controllers.yaml")],
         condition=UnlessCondition(is_sim)
     )
 
